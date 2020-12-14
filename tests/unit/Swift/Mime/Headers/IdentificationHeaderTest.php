@@ -132,12 +132,20 @@ class Swift_Mime_Headers_IdentificationHeaderTest extends \PHPUnit\Framework\Tes
         $this->assertEquals('<a@[1.2.3.4]>', $header->getFieldBody());
     }
 
-    public function testIdRigthIsIdnEncoded()
+    public function testIdRightIsIdnEncoded()
     {
         $header = $this->getHeader('References');
         $header->setId('a@ä');
         $this->assertEquals('a@ä', $header->getId());
         $this->assertEquals('<a@xn--4ca>', $header->getFieldBody());
+    }
+
+    public function testIdRightIdnNonTransitionalEncoded()
+    {
+        $header = $this->getHeader('References');
+        $header->setId('a@ß');
+        $this->assertEquals('a@ß', $header->getId());
+        $this->assertEquals('<a@xn--zca>', $header->getFieldBody());
     }
 
     public function testInvalidIdRightThrowsException()
